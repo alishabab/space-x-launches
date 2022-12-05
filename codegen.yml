@@ -1,0 +1,6 @@
+schema:
+  - https://api.spacex.land/graphql/
+generates:
+  ./types/__generated__/index.ts:
+    plugins:
+      - typescript
