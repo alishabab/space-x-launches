@@ -8,6 +8,11 @@ export default function Home() {
   const [variables, setVariables] = useState({
     find: { mission_name: "", rocket_name: "" },
   });
+
+  const [filters, setFilters] = useState({
+    mission_name: "",
+    rocket_name: "",
+  });
   const {
     data,
     loading: isLoading,
@@ -17,10 +22,6 @@ export default function Home() {
   const [selectedLaunches, setSelectedLaunches] = useState<TLaunch[]>([]);
 
   const onClickLoadMore = () => {
-    // setVariables({
-    //   ...variables,
-    //   offset: data?.launchesPast?.length || 0,
-    // });
     fetchMore({
       variables: {
         offset: data?.launchesPast?.length || 0,
@@ -60,6 +61,55 @@ export default function Home() {
             <span className="block sm:inline">{error.message}</span>
           </div>
         )}
+        <div className="mb-2">
+          <h3 className="text-center text-2xl font-semibold">Filters</h3>
+          <div className="flex space-x-1">
+            <div>
+              <label htmlFor="mission_name">Mission name</label>
+              <input
+                id="mission_name"
+                type="text"
+                className="w-full border border-gray-500 rounded-md p-2"
+                value={filters.mission_name}
+                onChange={(e) =>
+                  setFilters({
+                    ...filters,
+                    mission_name: e.target.value,
+                  })
+                }
+              />
+            </div>
+            <div>
+              <label htmlFor="rocket_name">Rocket name</label>
+              <input
+                id="rocket_name"
+                type="text"
+                className="w-full border border-gray-500 rounded-md p-2"
+                value={filters.rocket_name}
+                onChange={(e) =>
+                  setFilters({ ...filters, rocket_name: e.target.value })
+                }
+              />
+            </div>
+          </div>
+          <div className="flex justify-center mt-2">
+            <button
+              className="p-2 rounded-md border border-gray-500"
+              onClick={() => {
+                setVariables({
+                  find: {
+                    mission_name: filters.mission_name,
+                    rocket_name: filters.rocket_name,
+                  },
+                });
+                setSelectedLaunches([]);
+              }}
+            >
+              Search
+            </button>
+          </div>
+        </div>
+
         {!!selectedLaunches?.length && (
           <div className="mb-2">
             <h3 className="text-center text-2xl font-semibold">
@@ -85,6 +135,9 @@ export default function Home() {
             </div>
           </div>
         )}
+        {!isLoading && !error && !data?.launchesPast?.length && (
+          <p className="text-center">No launches found</p>
+        )}
         {data?.launchesPast &&
           data.launchesPast.map((launch) => (
             <div
@@ -106,7 +159,7 @@ export default function Home() {
             </div>
           ))}
         {isLoading && <p className="text-center">Loading...</p>}
-        {!isLoading && !error && (
+        {!isLoading && !error && !!data?.launchesPast?.length && (
           <div className="flex justify-center">
             <button
               onClick={onClickLoadMore}
