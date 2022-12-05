@@ -528,7 +528,7 @@ export type Query = {
   launchLatest?: Maybe<Launch>;
   launchNext?: Maybe<Launch>;
   launches?: Maybe<Array<Maybe<Launch>>>;
-  launchesPast?: Maybe<Array<Maybe<Launch>>>;
+  launchesPast?: Maybe<Array<Launch>>;
   launchesPastResult?: Maybe<LaunchesPastResult>;
   launchesUpcoming?: Maybe<Array<Maybe<Launch>>>;
   launchpad?: Maybe<Launchpad>;

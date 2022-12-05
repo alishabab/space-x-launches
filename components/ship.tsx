@@ -9,7 +9,13 @@ export const Ship = ({ name, home_port, image }: TProps) => {
   return (
     <div className="flex space-x-2 my-2">
       {image && (
-        <Image src={image} alt={name || "ship"} width={200} height={150} />
+        <Image
+          loader={() => image}
+          src={image}
+          alt={name || "ship"}
+          width={200}
+          height={150}
+        />
       )}
       <div>
         <p>

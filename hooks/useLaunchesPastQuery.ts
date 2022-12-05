@@ -18,5 +18,6 @@ export const useLaunchesPastQuery = (variables?: QueryLaunchesPastArgs) => {
         rocket_name,
       },
     },
+    notifyOnNetworkStatusChange: true,
   });
 };
