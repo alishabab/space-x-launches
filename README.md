@@ -11,6 +11,8 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+Click on any two launch cards to compare them by clicking on 'Compare' button.
+
 ## Implementation
 
 I used the following libraries/packages to implement this project:
