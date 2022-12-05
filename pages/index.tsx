@@ -1,6 +1,6 @@
 import Head from "next/head";
-import { useState } from "react";
-import { Launch } from "../components";
+import { useState, useEffect } from "react";
+import { Launch, Modal } from "../components";
 import { useLaunchesPastQuery } from "../hooks";
 import type { Launch as TLaunch } from "../types";
 
@@ -13,6 +13,9 @@ export default function Home() {
     mission_name: "",
     rocket_name: "",
   });
+
+  const [isComparing, setIsComparing] = useState(false);
+
   const {
     data,
     loading: isLoading,
@@ -39,6 +42,15 @@ export default function Home() {
     if (selectedLaunches.length === 2) return;
     setSelectedLaunches([...selectedLaunches, launch]);
   };
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (isComparing) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+  }, [isComparing]);
 
   return (
     <div>
@@ -127,6 +139,9 @@ export default function Home() {
                 ))}
               </div>
               <button
+                onClick={() => {
+                  setIsComparing(true);
+                }}
                 disabled={selectedLaunches.length < 2}
                 className="p-2 rounded-md border border-gray-500 disabled:cursor-not-allowed"
               >
@@ -170,6 +185,15 @@ export default function Home() {
           </div>
         )}
       </main>
+      {isComparing && (
+        <Modal onClose={() => setIsComparing(false)}>
+          <div className="flex space-x-2 w-full">
+            {selectedLaunches.map((launch, index) => (
+              <Launch key={launch.id} launch={launch} className="mb-4" />
+            ))}
+          </div>
+        </Modal>
+      )}
     </div>
   );
 }
